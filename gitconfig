@@ -1,6 +1,6 @@
 [user]
-    name = Pedro Araújo
-    email = phcrva@gmail.com
+    name = Pedro Araujo
+    email = pedro.araujo@ndrive.com
 
 [core]
     editor = vim
@@ -31,5 +31,5 @@
     smtpserver = smtp.gmail.com
     smtpserverport = 587
     smtpencryption = tls
-    smtpuser = phcrva@gmail.com
+    smtpuser = pedro.araujo@ndrive.com
     smtppass = ********
