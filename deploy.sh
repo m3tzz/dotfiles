@@ -60,17 +60,27 @@ function revert {
     [[ -z $(ls -A $STASH) ]] && rmdir $STASH
 }
 
+function deploy_status {
+    if [[ ! -z $STASH && -d $STASH ]]; then
+        echo "Deployed!"
+    else
+        echo "Not deployed."
+    fi
+}
+
 function usage {
     echo "$0 <action>"
     echo ""
     echo -e "\tapply\tapply dotfiles"
     echo -e "\trevert\trevert to old dotfiles"
+    echo -e "\tstatus\tshow current deploy status"
     echo ""
 }
 
 case $1 in
     apply) apply;;
     revert) revert;;
+    status) deploy_status;;
     *) usage;;
 esac
 
