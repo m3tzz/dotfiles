@@ -28,8 +28,8 @@ function apply {
 
     for file in ${dotfiles[*]}; do
         echo -n "Deploying $file..."
-        if regular_file ~/.$file; then
-            mv ~/.$file $STASH/$file
+        if [[ ! -e ~/.$file ]] || regular_file ~/.$file; then
+            [[ -e ~/.$file ]] && mv ~/.$file $STASH/$file
             ln -s $WD/$file ~/.$file
             echo "done"
         else
