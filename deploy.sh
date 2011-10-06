@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-OLDDIR=~/.old_dotfiles
+STASH=~/.dotfiles_stash
 WD=$(pwd)
 dotfiles=(bashrc vimrc gitconfig hgrc)
 
@@ -17,19 +17,19 @@ function deployed_file {
 }
 
 function apply {
-    [[ -z $OLDDIR ]] && return 1
+    [[ -z $STASH ]] && return 1
 
-    if [[ -d $OLDDIR ]]; then
+    if [[ -d $STASH ]]; then
         echo "Dotfiles already deployed!"
         return 1
     else
-        mkdir $OLDDIR
+        mkdir $STASH
     fi
 
     for file in ${dotfiles[*]}; do
         echo -n "Deploying $file..."
         if regular_file ~/.$file; then
-            mv ~/.$file $OLDDIR/$file
+            mv ~/.$file $STASH/$file
             ln -s $WD/$file ~/.$file
             echo "done"
         else
@@ -39,9 +39,9 @@ function apply {
 }
 
 function revert {
-    [[ -z $OLDDIR ]] && return 1
+    [[ -z $STASH ]] && return 1
 
-    if [[ ! -d $OLDDIR ]]; then
+    if [[ ! -d $STASH ]]; then
         echo "Can't revert to old dotfiles!"
         return 1
     fi
@@ -50,14 +50,14 @@ function revert {
         echo -n "Reverting $file..."
         if deployed_file $file; then
             rm ~/.$file
-            [[ -f "$OLDDIR/$file" ]] && mv $OLDDIR/$file ~/.$file
+            [[ -f "$STASH/$file" ]] && mv $STASH/$file ~/.$file
             echo "done"
         else
             echo "skipped"
         fi
     done
 
-    [[ -z $(ls -A $OLDDIR) ]] && rmdir $OLDDIR
+    [[ -z $(ls -A $STASH) ]] && rmdir $STASH
 }
 
 function usage {
